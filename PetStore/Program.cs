@@ -1,7 +1,8 @@
 ﻿using PetStore;
 using System.Text.Json;
-using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.DependencyInjection;
+using PetStore.Validators;
+using FluentValidation.Results;
 
 var services = CreateServiceCollection();
 
@@ -15,30 +16,22 @@ while (userInput.ToLower() != "exit")
 {
     if (userInput == "1")
     {
-        var dogLeash = new DogLeash();
-
-        Console.WriteLine("Creating a dog leash...");
-
-        Console.Write("Enter the material the leash is made out of: ");
-        dogLeash.Material = Console.ReadLine();
-
-        Console.Write("Enter the length in inches: ");
-        dogLeash.LengthInches = int.Parse(Console.ReadLine());
-
-        Console.Write("Enter the name of the leash: ");
-        dogLeash.Name = Console.ReadLine();
-
-        Console.Write("Give the product a description: ");
-        dogLeash.Description = Console.ReadLine();
-
-        Console.Write("Give the product a price in dollars: ");
-        dogLeash.Price = decimal.Parse(Console.ReadLine());
-
-        Console.Write("How many products do you have? ");
-        dogLeash.Quantity = int.Parse(Console.ReadLine());
-
-        productLogic.AddProduct(dogLeash);
-        Console.WriteLine("Added a dog leash.");
+        Console.WriteLine("Please add a Dog Leash in JSON format");
+        var userInputAsJson = Console.ReadLine();
+        var dogLeash = JsonSerializer.Deserialize<DogLeash>(userInputAsJson);
+        DogLeashValidator validator = new DogLeashValidator();
+        ValidationResult result = validator.Validate(dogLeash);
+        if(result.IsValid)
+        {
+            productLogic.AddProduct(dogLeash);
+        }
+        else
+        {
+            foreach(var failure in result.Errors)
+            {
+                Console.WriteLine("Property " + failure.PropertyName + " failed validation. Error was: " + failure.ErrorMessage);
+            }
+        }
     }
     if (userInput == "2")
     {
