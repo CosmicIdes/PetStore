@@ -1,59 +1,36 @@
-﻿namespace PetStore
+﻿using PetStore.Data;
+using PetStore.Validators;
+
+namespace PetStore
 {
     internal class ProductLogic : IProductLogic
     {
-        private List<Product> _products;
-        private Dictionary<string, DogLeash> _dogLeash;
-        private Dictionary<string, CatFood> _catFood;
+        private readonly IProductRepository _productRepo;
 
-        public ProductLogic()
+        public ProductLogic(IProductRepository productRepository)
         {
-            _products = new List<Product>();
-            _dogLeash = new Dictionary<string, DogLeash>();
-            _catFood = new Dictionary<string, CatFood>();
+            _productRepo = productRepository;
         }
 
         public void AddProduct(Product product)
         {
-            if (product is DogLeash)
+            var validator = new ProductValidator();
+            if (validator.Validate(product).IsValid)
             {
-                _dogLeash.Add(product.Name, product as DogLeash);
+                _productRepo.AddProduct(product);
             }
-            if (product is CatFood)
-            {
-                _catFood.Add(product.Name, product as CatFood);
-            }
-            _products.Add(product);
         }
 
         public List<Product> GetAllProducts()
         {
-            return _products;
+            return _productRepo.GetAllProducts();
         }
 
-        public DogLeash GetDogLeashByName(string name)
+        public Product GetProductById(int id)
         {
-            try
-            {
-                return _dogLeash[name];
-            }
-            catch (Exception ex)
-            {
-                return null;
-            }
-                
+            return _productRepo.GetProductById(id);
         }
 
-        public List<string> GetOnlyInStockProducts()
-        {
-            return _products.IsInStock().Select(x => x.Name).ToList();
-        }
-
-
-        public decimal GetTotalPriceOfInventory()
-        {
-            return _products.IsInStock().Select(x => x.Price).Sum();
-        }
     }
     
 }

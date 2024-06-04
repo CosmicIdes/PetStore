@@ -3,6 +3,7 @@ using System.Text.Json;
 using Microsoft.Extensions.DependencyInjection;
 using PetStore.Validators;
 using FluentValidation.Results;
+using PetStore.Data;
 
 var services = CreateServiceCollection();
 
@@ -16,10 +17,10 @@ while (userInput.ToLower() != "exit")
 {
     if (userInput == "1")
     {
-        Console.WriteLine("Please add a Dog Leash in JSON format");
+        Console.WriteLine("Please add a Product in JSON format");
         var userInputAsJson = Console.ReadLine();
-        var dogLeash = JsonSerializer.Deserialize<DogLeash>(userInputAsJson);
-        DogLeashValidator validator = new DogLeashValidator();
+        var dogLeash = JsonSerializer.Deserialize<Product>(userInputAsJson);
+        ProductValidator validator = new ProductValidator();
         ValidationResult result = validator.Validate(dogLeash);
         if(result.IsValid)
         {
@@ -35,26 +36,10 @@ while (userInput.ToLower() != "exit")
     }
     if (userInput == "2")
     {
-        Console.Write("What is the name of the dog leash you would like to view? ");
-        var dogLeashName = Console.ReadLine();
-        var dogLeash = productLogic.GetDogLeashByName(dogLeashName);
-        Console.WriteLine(JsonSerializer.Serialize(dogLeash));
-        Console.WriteLine();
-    }
-
-    if (userInput == "3")
-    {
-        Console.WriteLine("The following products are in stock: ");
-        var inStock = productLogic.GetOnlyInStockProducts();
-        foreach (var item in inStock)
-        {
-            Console.WriteLine(item);
-        }
-        Console.WriteLine();
-    }
-    if (userInput == "4")
-    {
-        Console.WriteLine($"The total price of inventory in stock is {productLogic.GetTotalPriceOfInventory()}");
+        Console.Write("What is the id of the Product you would like to view? ");
+        var id = int.Parse(Console.ReadLine());
+        var product = productLogic.GetProductById(id);
+        Console.WriteLine(JsonSerializer.Serialize(product));
         Console.WriteLine();
     }
 

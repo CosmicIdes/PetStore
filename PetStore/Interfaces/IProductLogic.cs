@@ -6,12 +6,7 @@
 
         public List<Product> GetAllProducts();
 
-        public DogLeash GetDogLeashByName(string name);
-
-        public List<string> GetOnlyInStockProducts();
-
-        public decimal GetTotalPriceOfInventory();
-
+        public Product GetProductById(int productId);
     }
 }
 

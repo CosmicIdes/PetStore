@@ -1,4 +1,6 @@
-﻿namespace PetStore
+﻿using PetStore.Data;
+
+namespace PetStore
 {
     public static class ListExtensions
 	{

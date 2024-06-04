@@ -10,17 +10,18 @@
   <ItemGroup>
     <None Remove="Extensions\" />
     <None Remove="Interfaces\" />
-    <None Remove="Products\" />
     <None Remove="Validators\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Extensions\" />
     <Folder Include="Interfaces\" />
-    <Folder Include="Products\" />
     <Folder Include="Validators\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
     <PackageReference Include="FluentValidation" Version="11.9.1" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PetStore.Data\PetStore.Data.csproj" />
   </ItemGroup>
 </Project>
