@@ -1,13 +1,12 @@
-﻿using PetStore;
-using System.Text.Json;
-using Microsoft.Extensions.DependencyInjection;
-using PetStore.Validators;
+﻿using System.Text.Json;
 using FluentValidation.Results;
-using PetStore.Data;
+using Microsoft.Extensions.DependencyInjection;
+using PetStore;
+using PetStore.Validators;
 
 var services = CreateServiceCollection();
 
-var productLogic = services.GetService<IProductLogic>();
+var productLogic = services.GetService<ProductLogic>();
 
 MainOptions.MainOptionsList();
 
